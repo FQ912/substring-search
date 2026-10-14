@@ -3,7 +3,7 @@
 Примеры запуска:
     python cli.py --string "ababbababa" --sub "aba"
     python cli.py --string "ababbababa" --sub "aba" "bba" --color
-    python cli.py --file input.txt --sub "aba" --count 5 --algorithm bmh
+    python cli.py --file input.txt --sub "aba" --count 5
     python cli.py --string "abcabc" --sub "abc" --method last --limit 3
 """
 
@@ -13,7 +13,8 @@ from typing import Optional
 
 from colorama import Fore, Style, init as colorama_init
 
-from search import search, ALGORITHMS
+from search import search
+from logger import log_execution_time
 
 colorama_init(autoreset=True)
 
@@ -65,10 +66,6 @@ def build_parser() -> argparse.ArgumentParser:
         help='Общее количество вхождений k (по умолчанию — все).',
     )
     parser.add_argument(
-        '--algorithm', '-a', choices=ALGORITHMS, default='kmp',
-        help='Алгоритм поиска (по умолчанию kmp).',
-    )
-    parser.add_argument(
         '--color', action='store_true',
         help='Выделять найденные подстроки цветом.',
     )
@@ -91,14 +88,19 @@ def read_source(args: argparse.Namespace) -> str:
         sys.exit(1)
 
 
-def _collect_matches(result, patterns):
-    """Преобразует результат search() в словарь {подстрока: [индексы]}.
+@log_execution_time
+def _run_search(text, target, case_sensitivity, method, count):
+    """Обёртка над search() с логированием времени выполнения."""
+    return search(
+        text, target,
+        case_sensitivity=case_sensitivity,
+        method=method,
+        count=count,
+    )
 
-    Обрабатывает три случая:
-    - dict: результат поиска нескольких подстрок;
-    - None: ничего не найдено (для одной или нескольких подстрок);
-    - tuple: результат поиска одной подстроки.
-    """
+
+def _collect_matches(result, patterns):
+    """Преобразует результат search() в словарь {подстрока: [индексы]}."""
     if isinstance(result, dict):
         return {p: list(result.get(p) or []) for p in patterns}
     if result is None:
@@ -179,13 +181,11 @@ def main(argv: Optional[list] = None) -> int:
     patterns = args.sub
     target = patterns[0] if len(patterns) == 1 else patterns
 
-    result = search(
-        text,
-        target,
+    result = _run_search(
+        text, target,
         case_sensitivity=args.case,
         method=args.method,
         count=args.count,
-        algorithm=args.algorithm,
     )
 
     if args.color:

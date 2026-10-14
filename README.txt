@@ -41,12 +41,16 @@ Windows (cmd):
 Запускается через `python cli.py` с параметрами.
 
 6.1. Поиск в строке
-
     python cli.py --string "ababbababa" --sub aba
 
 Результат:
 
     'aba': (0, 5, 7)
+
+    Запуск CLI с декоратором
+
+    python cli.py --string "ababbababa" --sub aba
+
 
 6.2. Несколько подстрок
 
@@ -93,19 +97,9 @@ Windows (cmd):
 
     'a': (0, 1)
 
-6.7. Выбор алгоритма поиска
+6.7. Алгоритма поиска
 
-Доступны пять алгоритмов:
-
-    --algorithm kmp    Кнута-Морриса-Пратта (по умолчанию)
-    --algorithm bm     Бойера-Мура
-    --algorithm ac     Ахо-Корасик
-    --algorithm rk     Рабина-Карпа
-    --algorithm bmh    Бойера-Мура-Хорспула
-
-Пример:
-
-    python cli.py --string "ababbababa" --sub aba --algorithm bmh
+    python cli.py --string "ababbababa" --sub aba
 
 6.8. Поиск в файле
 
@@ -127,6 +121,7 @@ Windows (cmd):
 По умолчанию выводится не более 10 строк. Изменить можно флагом `--limit`:
 
     python cli.py --file input.txt --sub hello --limit 5
+
 
 6.10. Справка по всем параметрам
 
