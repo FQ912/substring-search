@@ -1,0 +1,31 @@
+[MASTER]
+ignore=.venv
+ignore-patterns=test_.*\.py
+
+[MESSAGES CONTROL]
+disable=
+    C0103,
+    C0114,
+    C0115,
+    C0116,
+    C0304,
+    R0801,
+    R0902,
+    R0903,
+    R0911,
+    R0912,
+    R0913,
+    R0914,
+    R0915,
+    R0916,
+    R0917,
+    R1702,
+    W0212,
+    W0613
+
+[FORMAT]
+max-line-length=100
+
+[DESIGN]
+max-args=10
+max-locals=20

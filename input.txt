@@ -1,0 +1,6 @@
+Hello world
+This is a test file
+hello again, world
+Some ERROR occurred
+A warning here
+end of file
