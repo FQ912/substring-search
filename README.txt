@@ -47,11 +47,6 @@ Windows (cmd):
 
     'aba': (0, 5, 7)
 
-    Запуск CLI с декоратором
-
-    python cli.py --string "ababbababa" --sub aba
-
-
 6.2. Несколько подстрок
 
     python cli.py --string "ababbababa" --sub aba bba
