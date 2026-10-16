@@ -65,8 +65,12 @@ def bm_search(string: str, pattern: str) -> list:
     """Алгоритм Бойера-Мура (bad character + good suffix).
 
     Возвращает список индексов начала всех вхождений pattern в string.
+    Пустая подстрока даёт позиции 0..len(string).
     """
-    if not pattern or not string or len(pattern) > len(string):
+    if pattern == '':
+        return list(range(len(string) + 1))
+
+    if not string or len(pattern) > len(string):
         return []
 
     m = len(pattern)
@@ -95,10 +99,10 @@ def bm_search(string: str, pattern: str) -> list:
 
 def _search_one(string: str, pattern: str, method: str,
                 count: Optional[int]) -> Optional[tuple]:
-    """Поиск одной подстроки."""
-    if not pattern:
-        return None
+    """Поиск одной подстроки.
 
+    Пустая подстрока даёт все позиции от 0 до len(string).
+    """
     all_matches = bm_search(string, pattern)
 
     if method == 'last':
@@ -173,6 +177,9 @@ def search(string: str,
     :return: кортеж индексов для одной подстроки,
              словарь {подстрока: кортеж индексов | None} для нескольких,
              None если совпадений нет.
+
+    Пустая подстрока формально входит в любую строку на каждой позиции
+    от 0 до len(string) и даёт соответствующий набор индексов.
     """
     if method not in ('first', 'last'):
         raise ValueError("method должен быть 'first' или 'last'")
